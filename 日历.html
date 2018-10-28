@@ -14,8 +14,8 @@
             padding: 200px;
         }
         nav{
-            width: 304px;
-            height: 300px;
+            width: 362px;
+            height: 335px;
             overflow: hidden;
         }
         main{
@@ -23,7 +23,7 @@
             transition: all 1s;
         }
         .div{
-            width: 302px;
+            width: 360px;
             height: 250px;
             border:1px solid yellow;
             float: left;
@@ -41,9 +41,9 @@
         }
         .month{
             position: absolute;
-            top:-21px;
-            left:134px;
-            z-index: -1;
+            top:-41px;
+            left:149px;
+            z-index: 1;
         }
         .show{
             transition:all 1s;
@@ -56,15 +56,32 @@
             background: #38ca73;
             opacity: .8;
         }
-
+        .week{
+            display: flex;
+            justify-content: space-between;
+        }
+        nav .week span{
+            font-size: 14px;
+        }
+        
     </style>
 </head>
 <body>
    <nav>
         <h4>
             <button>上一月</button>
+            <span></span>
             <button>下一月</button>
         </h4>
+        <h5 class="week">
+            <span>星期天</span>
+            <span>星期一</span>
+            <span>星期二</span>
+            <span>星期三</span>
+            <span>星期四</span>
+            <span>星期五</span>
+            <span>星期六</span>
+        </h5>
         <main>
         
         </main>
@@ -72,15 +89,18 @@
    
     <script>
 
-        let time = new Date(2018,9,1)
+        let time = new Date(2018,9,2)
         let timeFinall = new Date() 
       
         if(time.getMonth() === 9){
           var timeout = (timeFinall - time)/1000/60/60/24
-          timeout += 30
+          timeout += 31
         }
         
        var Timeout = Math.ceil(timeout) + 1
+
+        console.log(Timeout);
+
        var arr = []
        var month = document.querySelector('h4 span')
       
@@ -103,7 +123,7 @@
             }
             // 填充剩余的日期格子
              if (time.getMonth() === 9) {
-                  for (let i = 1; i <= 5; i++) {
+                  for (let i = 1; i <= 6; i++) {
                         array.push(i)
                   }
              }
@@ -112,25 +132,29 @@
             }
         }
         nine()
+        // console.log(arr);
 
         function ten(Nine,array2 = []){
-
+                
             for (let i = 1; i < Nine; i++) {
                 index = i
                 if (time.getMonth() + 1=== 10) {
                     
-                let res = Math.floor(Timeout/30)
+                var res = Math.floor(Timeout/30)
                 
                 if (index > 31) {
                     index = 1
-                }
-                if (!arr[res]) {
-                    arr.push(array2)
                 }
                 array2.push(index)
             }
             index++
          }
+            let fristDay = (30 - time.getDate() + 1) % 7
+             array2.unshift(30)
+            if (!arr[res]) {
+                arr.push(array2)
+            }
+            
         }
         ten(Nine)
       
@@ -157,14 +181,16 @@
                  height:${div.offsetHeight/5}px;text-align:center;line-height:${Math.floor(div.offsetHeight/5)}px;
                  box-sizing: border-box;border-right: none`
                  
-                 if (j >= 30) { 
+                //  给不是当前月的日期添加高亮
+                 if (j >= 29) { 
                      span.classList.add('active')
                  }
-                 
                  div.appendChild(span)
              }    
+          
         }
-        
+
+
         let div = document.querySelector('main div')
         let width = div.offsetWidth
 
@@ -172,19 +198,19 @@
         const [btn1, btn2] = [...btn]
 
            var index = 0
-            btn1.addEventListener('click', () => {
-                
+            btn1.addEventListener('click', function() {
+                          
                  index -- 
                  if(index < 0){
                      index = 0
                  } 
                  main.style.transition = 'all 1s'
                  main.style.transform = `translateX(${-index*width}px)`
-
-                
+  
             }, false)
 
              btn2.addEventListener('click', () => {
+                 
                  index++
                  if (index > 1) {
                      index = 1
@@ -192,13 +218,26 @@
                  main.style.transition = 'all 1s'
                  main.style.transform = `translateX(${-index * width}px)`
 
+
+                //  给不是当前月的日期添加高亮
+                 let Span = document.querySelectorAll('main div')
+                 let fristDay = (30 - time.getDate() + 1) % 7
+                for (let i = 0; i < Span.length; i++) {
+                    if (i === index) {
+                        Span[i].getElementsByTagName('span')[0].className = 'active'
+
+                    }
+                    
+                }
+                 
                 }, false)
+
+               
 
         // 设置当天高亮 
           var s = document.getElementsByTagName('span')
           var finall = s[s.length-1]  
           finall.style.background = 'red'
-
 
         // 显示年月
        var monthOut = timeFinall.getMonth() + 1 - time.getMonth()
