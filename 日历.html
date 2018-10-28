@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+        }
+        body{
+            padding: 200px;
+        }
+        nav{
+            width: 304px;
+            height: 300px;
+            overflow: hidden;
+        }
+        main{
+            height: 250px;
+            transition: all 1s;
+        }
+        .div{
+            width: 302px;
+            height: 250px;
+            border:1px solid yellow;
+            float: left;
+            position: relative;
+
+            /* transform: translateX() */
+        }
+        h4{
+            display: flex;
+            justify-content: space-between;
+            /* width: 100% */
+        }
+        .active{
+            background: #666;
+        }
+        .month{
+            position: absolute;
+            top:-21px;
+            left:134px;
+            z-index: -1;
+        }
+        .show{
+            transition:all 1s;
+            opacity: 1;
+        }
+        .hide{
+            opacity: 0.8;
+        }
+        button{
+            background: #38ca73;
+            opacity: .8;
+        }
+
+    </style>
+</head>
+<body>
+   <nav>
+        <h4>
+            <button>上一月</button>
+            <button>下一月</button>
+        </h4>
+        <main>
+        
+        </main>
+   </nav>
+   
+    <script>
+
+        let time = new Date(2018,9,1)
+        let timeFinall = new Date() 
+      
+        if(time.getMonth() === 9){
+          var timeout = (timeFinall - time)/1000/60/60/24
+          timeout += 30
+        }
+        
+       var Timeout = Math.ceil(timeout) + 1
+       var arr = []
+       var month = document.querySelector('h4 span')
+      
+        function nine(array = []){
+
+            for (let i = time.getDate(); i < Timeout; i++) {
+                    let index = i;
+                    let IndexArr = [];
+                    if (time.getMonth()=== 9) {
+                        var res = 0
+                        var Nine = Timeout % 30
+                        window.Nine = Nine
+
+                        if(index > 30){
+                            break;
+                        }
+                        array.push(index)
+                }
+                index++
+            }
+            // 填充剩余的日期格子
+             if (time.getMonth() === 9) {
+                  for (let i = 1; i <= 5; i++) {
+                        array.push(i)
+                  }
+             }
+              if (!arr[res]) {
+                arr.push(array)
+            }
+        }
+        nine()
+
+        function ten(Nine,array2 = []){
+
+            for (let i = 1; i < Nine; i++) {
+                index = i
+                if (time.getMonth() + 1=== 10) {
+                    
+                let res = Math.floor(Timeout/30)
+                
+                if (index > 31) {
+                    index = 1
+                }
+                if (!arr[res]) {
+                    arr.push(array2)
+                }
+                array2.push(index)
+            }
+            index++
+         }
+        }
+        ten(Nine)
+      
+        for (let i = 0; i < arr.length; i++) {
+
+              let div = document.createElement('div')
+              div.classList.add('div')
+
+             var main = document.querySelector('main')
+             main.appendChild(div)
+             main.style.width = div.offsetWidth * arr.length + 'px' 
+
+             let p = document.createElement('p')
+             p.classList.add('month')
+             div.appendChild(p)
+             
+             for (let j = 0; j < arr[i].length; j++) {
+                 const element = arr[i][j]
+                 
+                 let span = document.createElement('span')
+                 span.innerText = element
+                 span.style.cssText = `display:inline-block;border:1px solid yellow;
+                 width:${Math.floor(div.offsetWidth/7)}px;
+                 height:${div.offsetHeight/5}px;text-align:center;line-height:${Math.floor(div.offsetHeight/5)}px;
+                 box-sizing: border-box;border-right: none`
+                 
+                 if (j >= 30) { 
+                     span.classList.add('active')
+                 }
+                 
+                 div.appendChild(span)
+             }    
+        }
+        
+        let div = document.querySelector('main div')
+        let width = div.offsetWidth
+
+        var btn = document.getElementsByTagName('h4')[0].getElementsByTagName('button')
+        const [btn1, btn2] = [...btn]
+
+           var index = 0
+            btn1.addEventListener('click', () => {
+                
+                 index -- 
+                 if(index < 0){
+                     index = 0
+                 } 
+                 main.style.transition = 'all 1s'
+                 main.style.transform = `translateX(${-index*width}px)`
+
+                
+            }, false)
+
+             btn2.addEventListener('click', () => {
+                 index++
+                 if (index > 1) {
+                     index = 1
+                 } 
+                 main.style.transition = 'all 1s'
+                 main.style.transform = `translateX(${-index * width}px)`
+
+                }, false)
+
+        // 设置当天高亮 
+          var s = document.getElementsByTagName('span')
+          var finall = s[s.length-1]  
+          finall.style.background = 'red'
+
+
+        // 显示年月
+       var monthOut = timeFinall.getMonth() + 1 - time.getMonth()
+       
+       function showYearMonth(monthOut) {
+           var month = document.getElementsByTagName('div')
+        
+           for (let i = 0; i < month.length; i++) {
+                   let p = month[i].getElementsByTagName('p')[0]
+                   p.classList.add('hide')
+                   var Month = time.getMonth() + i;
+                   var Year = time.getFullYear()
+                   p.innerText = Year + ':' + Month
+
+           }
+       } 
+        showYearMonth(monthOut)
+        
+    </script>
+</body>
+</html>
