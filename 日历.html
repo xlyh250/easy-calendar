@@ -94,7 +94,7 @@
         
         if(time.getMonth() === 9){
           var timeout = (timeFinall - time)/1000/60/60/24
-          timeout += 30
+          timeout += 31
         }
         
        var Timeout = Math.ceil(timeout)
@@ -127,9 +127,9 @@
             console.log(res);
             
             // 填充剩余的日期格子
-                for (let i = 1; i <= 6; i++) {
-                    arr[res].push(i)
-                }
+            for (let i = 1; i <= 6; i++) {
+                arr[res].push(i)
+            }
         }
         nine()
 
@@ -154,9 +154,11 @@
             }
             index++
          }
-
-            arr[res].unshift(30)
+             
+        for (let index = 0; index < fristDay; index++) {
+            arr[res].unshift(arr[res-1][arr[res-1].length-fristDay-6])
         }
+     }
         ten(Nine)
       
       console.log(arr);
