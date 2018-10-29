@@ -91,72 +91,75 @@
 
         let time = new Date(2018,9,2)
         let timeFinall = new Date() 
-      
+        
         if(time.getMonth() === 9){
           var timeout = (timeFinall - time)/1000/60/60/24
-          timeout += 31
+          timeout += 30
         }
         
-       var Timeout = Math.ceil(timeout) + 1
+       var Timeout = Math.ceil(timeout)
 
         console.log(Timeout);
 
        var arr = []
        var month = document.querySelector('h4 span')
       
-        function nine(array = []){
+        function nine(){
 
             for (let i = time.getDate(); i < Timeout; i++) {
                     let index = i;
                     let IndexArr = [];
-                    if (time.getMonth()=== 9) {
-                        var res = 0
-                        var Nine = Timeout % 30
-                        window.Nine = Nine
 
-                        if(index > 30){
-                            break;
-                        }
-                        array.push(index)
-                }
+                    var res = Math.floor(index/31)
+                    
+                    var Nine = Timeout % 30
+                    window.Nine = Nine
+                    if (!arr[res]) {
+                        arr[res] = []
+                    }
+                    arr[res].push(index)
+
+                    if(index >= 30){
+                        break;
+                    }
                 index++
             }
+            console.log(res);
+            
             // 填充剩余的日期格子
-             if (time.getMonth() === 9) {
-                  for (let i = 1; i <= 6; i++) {
-                        array.push(i)
-                  }
-             }
-              if (!arr[res]) {
-                arr.push(array)
-            }
+                for (let i = 1; i <= 6; i++) {
+                    arr[res].push(i)
+                }
         }
         nine()
-        // console.log(arr);
 
-        function ten(Nine,array2 = []){
+
+        function ten(Nine){
+            let fristDay = (30 - time.getDate() + 1) % 7
                 
-            for (let i = 1; i < Nine; i++) {
+            for (let i = 1; i <= Nine+ fristDay; i++) {
                 index = i
                 if (time.getMonth() + 1=== 10) {
                     
-                var res = Math.floor(Timeout/30)
+                var res = Math.floor(Timeout/31)
                 
                 if (index > 31) {
-                    index = 1
+                    break;
                 }
-                array2.push(index)
+                 if (!arr[res]) {
+                        arr[res] = []
+                    }
+
+               arr[res].push(index)
             }
             index++
          }
-            let fristDay = (30 - time.getDate() + 1) % 7
-             array2.unshift(30)
-            if (!arr[res]) {
-                arr.push(array2)
-            }
-            
+
+            arr[res].unshift(30)
         }
         ten(Nine)
+      
+      console.log(arr);
       
         for (let i = 0; i < arr.length; i++) {
 
