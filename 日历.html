@@ -121,7 +121,6 @@
         // 获取某一天到今天的天数
         var timer = Date.parse(nowDay);
         var lasttime = Date.parse("2018-09-02");
-
         //  加上1
         var dayOut = Math.floor((timer - lasttime) / (1000 * 60 * 60 * 24)+1);
 
@@ -203,10 +202,8 @@
         }
 
         ProcessingMonth()
-        console.log(arr);
 
-
-
+    // 生成dom元素
         function CreateDom() {
 
             for (let i = 0; i < arr.length; i++) {
