@@ -20,7 +20,7 @@
         }
         main{
             height: 250px;
-            transition: all 1s;
+            /* transition: all 1s; */
         }
         .div{
             width: 360px;
@@ -93,21 +93,21 @@
     <script>
 
         let time = new Date(2018,9,2)
-        let timeFinall = new Date(2018,12,30) 
+        let timeFinall = new Date(2018,12,31) 
 
         //  获取今天  
         let nowDay = new Date()
+        // let nowDay = new Date("2018-09-21")
         let day = nowDay.getDate()
         
         // 获取某一天到今天的天数
-         var timer = Date.parse(new Date());
+         var timer = Date.parse(nowDay);
          var lasttime = Date.parse("2018-09-02");
          var dayOut = parseInt((timer - lasttime) / (1000 * 60 * 60 * 24));
          
 
         var Timeout = Math.ceil((timeFinall - time)/1000/60/60/24)
         var MonthOut = Math.floor((timeFinall - time) / 1000 / 60 / 60 / 24 / 30)
-
         var arr = []
       
     // 处理月份  
@@ -116,9 +116,9 @@
         var SmallMonth = [4,6,9,11]
 
      for (let i = 0; i < MonthOut; i++) {
-       // 特殊处理第一月
         if (!arr[i]) {
              arr[i] = []  
+         // 特殊处理第一月
             if (arr.length === 1) {
                 for (let j = time.getDate(); j < Timeout; j++) {
                     if (j > 30) {
@@ -154,9 +154,7 @@
                   for (let j = 1; j < Timeout - reduce() + j; j++) {
                       arr[i].push(j)
                   }
-
               }
-
             } 
         }
 
@@ -174,91 +172,137 @@
          }
        }
     }
-     var array = Object.assign({},arr) 
   }
 
      ProcessingMonth()
+
+
+    var array = Object.assign([], arr) 
   
-          
+  function CreateDom() {
+      
+    for (let i = 0; i < arr.length; i++) {
+
+        let div = document.createElement('div')
+        div.classList.add('div')
+
+        var main = document.querySelector('main')
+        main.appendChild(div)
+        main.style.width = div.offsetWidth * arr.length + 'px'
+
+        let p = document.createElement('p')
+        p.classList.add('month')
+        div.appendChild(p)
+
+        for (let j = 0; j < arr[i].length; j++) {
+            const element = arr[i][j]
+
+            let span = document.createElement('span')
+            span.innerText = element
+            span.classList.add('.span')
+            span.style.cssText = `display:inline-block;border:1px solid yellow;
+                 width:${Math.floor(div.offsetWidth / 7)}px;
+                 height:${div.offsetHeight / 6}px;text-align:center;line-height:${Math.floor(div.offsetHeight / 6)}px;
+                 box-sizing: border-box;border-right: none`
+            //  给不是当前月的日期添加高亮
+            div.appendChild(span)
+
+        }
+    }
+  }
+
+  CreateDom()
+
+     // 补充格子
     function vacancy(){
 
        for (let i = 1; i <= arr.length; i++) {
             
              var res = arr[i-1].length % 7
              var result = 7 - arr[i - 1].length % 7
+         
+            var div = document.querySelectorAll('div')
 
-           if(i>3){
-               return;
-           }
             for (let k = 1; k <= res; k++) {
-                 arr[i].unshift(arr[i-1][arr[i-1].length-k])
+
+                if (i <= 3) {
+                    var spanElement = div[i].getElementsByTagName('span');
+                }
+                 if (i > 3) {
+                    return;
+                }
+                var span = document.createElement('span')
+                span.innerText = arr[i - 1][arr[i - 1].length - k]
+                span.classList.add('.span')
+                span.style.cssText = `display:inline-block;border:1px solid yellow;
+                 width:${Math.floor(div[i].offsetWidth / 7)}px;
+                 height:${div[i].offsetHeight / 6}px;text-align:center;line-height:${Math.floor(div[i].offsetHeight / 6)}px;
+                 box-sizing: border-box;border-right: none;background:#666`
+                div[i].insertBefore(span,spanElement[0])
             }
 
            for (let j = 1; j <= result+7; j++) {
-               arr[i-1].push(j)
+               var span = document.createElement('span')
+               span.innerText = j
+               span.classList.add('.span')
+               span.style.cssText = `display:inline-block;border:1px solid yellow;
+                 width:${Math.floor(div[i].offsetWidth / 7)}px;
+                 height:${div[i].offsetHeight / 6}px;text-align:center;line-height:${Math.floor(div[i].offsetHeight / 6)}px;
+                 box-sizing: border-box;border-right: none;background:#666;`
+
+               div[i-1].appendChild(span)
            }
-
        }
-
     }
     vacancy()
 
-       for (let i = 0; i < arr.length; i++) {
-
-            let div = document.createElement('div')
-            div.classList.add('div')
-
-            var main = document.querySelector('main')
-            main.appendChild(div)
-            main.style.width = div.offsetWidth * arr.length + 'px'
-
-            let p = document.createElement('p')
-            p.classList.add('month')
-            div.appendChild(p)
-
-            for (let j = 0; j < arr[i].length; j++) {
-                const element = arr[i][j]
-                
-                let span = document.createElement('span')
-                span.innerText = element
-                span.classList.add('.span')
-                span.style.cssText = `display:inline-block;border:1px solid yellow;
-                 width:${Math.floor(div.offsetWidth / 7)}px;
-                 height:${div.offsetHeight / 6}px;text-align:center;line-height:${Math.floor(div.offsetHeight / 6)}px;
-                 box-sizing: border-box;border-right: none`
-
-                  
-                //  给不是当前月的日期添加高亮
-
-                div.appendChild(span)
-
+        // 计算出当前index
+        function currentIndex() {
+            var Index = 0;
+            for (let i = 0; i < array.length; i++) {
+          
+                for (let j = 1; j <= array[i].length; j++) {
+                    Index++
+                 
+                    if (Index == dayOut) {
+                        return i
+                    }
+                }
             }
-
         }
+        var index = currentIndex()
+        let main = document.querySelector('main')
+        let div = document.querySelector('main div')
+        let width = div.offsetWidth;
 
+     // 显示当前的月份
+        function ShowCurrent(){
+              main.style.transform = `translateX(${-index * width}px)`
+        }
+        ShowCurrent()
+
+         
     //  点击移动  
      function move(){
 
-        let main = document.querySelector('main')
-        let div = document.querySelector('main div')
-        let width = div.offsetWidth
         var btn = document.getElementsByTagName('h4')[0].getElementsByTagName('button')
         const [btn1, btn2] = [...btn]
-        var index = 0
 
             btn1.addEventListener('click', function() {
+                
+                console.log(index);
+                 index-- 
                           
-                 index -- 
                  if(index < 0){
                      index = 0
                  } 
                  main.style.transition = 'all 1s'
                  main.style.transform = `translateX(${-index*width}px)`
   
+
             }, false)
 
              btn2.addEventListener('click', () => {
-                 
                  index++
 
                  if (index > arr.length - 1) {
@@ -268,12 +312,12 @@
                  main.style.transform = `translateX(${-index * width}px)`
                  
                 }, false)
+
        }
 
        move()
 
         // 显示年月
-       
        function showYearMonth() {
 
            var odiv = document.getElementsByTagName('div')
@@ -288,17 +332,18 @@
        } 
         showYearMonth()
 
-       // 当前时间高亮
+     
+       // 当前日期高亮
         function currentShow() {
-               let o = Math.floor((dayOut / 42))
+             
             // console.log(value.innerText);
-            var oDiv = document.getElementsByTagName('div')[o].getElementsByTagName('span')
+            var oDiv = document.getElementsByTagName('div')[currentIndex()].getElementsByTagName('span')
 
             let value = oDiv
-
             for (let i = 0; i < value.length; i++) {
                 if (value[i].innerText == day) {
                     value[i].style.background = 'red'
+                    value[i].setAttribute('title','今天')
                 }
             }
         }
