@@ -104,13 +104,18 @@
 
     <script>
 
+        // 获取初始和结束日期
         let time = new Date(2018, 9, 2)
-        let timeFinall = new Date(2018, 12, 31)
+        let timeFinall = new Date(2019, 12, 31)
+
+        var Timeout = Math.floor((timeFinall - time) / 1000 / 60 / 60 / 24)
+        var MonthOut = Math.floor((timeFinall - time) / 1000 / 60 / 60 / 24 / 30)
+        var arr = []
 
         //  获取今天  
         let nowDay = new Date()
-        // let nowDay = new Date("2018-11-01")
-        // let nowDay = new Date("2018-11-30")
+        // let nowDay = new Date("2018-12-01")
+        //  let nowDay = new Date("2018-11-30")
         let day = nowDay.getDate()
 
         // 获取某一天到今天的天数
@@ -118,15 +123,12 @@
         var lasttime = Date.parse("2018-09-02");
 
         //  加上1
-        var dayOut = parseInt((timer - lasttime) / (1000 * 60 * 60 * 24)) + 1;
+        var dayOut = Math.floor((timer - lasttime) / (1000 * 60 * 60 * 24)+1);
 
-        var Timeout = Math.ceil((timeFinall - time) / 1000 / 60 / 60 / 24)
-        var MonthOut = Math.floor((timeFinall - time) / 1000 / 60 / 60 / 24 / 30)
-        var arr = []
 
         // 处理月份  
         function ProcessingMonth() {
-            var BigMonth = [1, 3, 5, 7, 8, 10, 12]
+            var BigMonth = [0, 1, 3, 5, 7, 8, 10]
             var SmallMonth = [4, 6, 9, 11]
 
             for (let i = 0; i < MonthOut; i++) {
@@ -154,7 +156,8 @@
 
                     //处理大月
                     BigMonth.forEach(value => {
-                        if (time.getMonth() + i === value) {
+
+                        if ((time.getMonth() + i) % 12 === value) {
 
                             if (MonthOut - 1 !== i) {
                                 for (let j = 1; j < Timeout - reduce(); j++) {
@@ -176,7 +179,7 @@
                         if (arr.length === 1) {
                             return
                         }
-                        if (time.getMonth() + i === value) {
+                        if ((time.getMonth() + i) % 12 === value) {
                             for (let j = 1; j < Timeout - reduce(); j++) {
                                 if (j > 30) {
                                     break;
@@ -186,11 +189,21 @@
                         }
                     })
 
+                    if ((time.getMonth() + i) % 12 === 2) {
+                        for (let j = 1; j < Timeout - reduce(); j++) {
+                            if (j > 28) {
+                                break;
+                            }
+                            arr[i].push(j)
+                        }
+                    }
+
                 }
             }
         }
 
         ProcessingMonth()
+        console.log(arr);
 
 
 
@@ -227,7 +240,6 @@
 
         CreateDom();
 
-
         let array = arr.concat()
         console.log(array);
 
@@ -238,7 +250,6 @@
                 for (let j = 1; j <= array[i].length; j++) {
 
                     if (Index === dayOut) {
-                        console.log(dayOut);
                         return i
                     }
                     Index++
@@ -258,11 +269,13 @@
 
         // 显示当前日期
         function currentShow() {
+
             // console.log(value.innerText);
             var oDiv = document.getElementsByTagName('div')[currentIndex()].getElementsByTagName('span')
             let value = oDiv
             for (let i = 0; i < value.length; i++) {
                 if (value[i].innerText == day) {
+                    
                     value[i].style.background = 'red'
                     value[i].setAttribute('title', '今天')
                 }
@@ -315,12 +328,12 @@
                 var div = document.querySelectorAll('div')
 
                 for (let k = 1; k <= res; k++) {
-                    if (i > 3) {
+                    if (i > arr.length - 1) {
                         return;
                     }
                     arr[i].unshift(arr[i - 1][arr[i - 1].length - k])
 
-                    if (i <= 3) {
+                    if (i <= arr.length - 1) {
                         var spanElement = div[i].getElementsByTagName('span');
                     }
 
@@ -364,7 +377,14 @@
                 p.classList.add('hide')
                 var Month = time.getMonth() + i;
                 var Year = time.getFullYear()
-                p.innerText = Year + ':' + Month
+
+                if (Month % 13 >= 0 && Month > 12) {
+                    Year = Year + 1
+                    Month = Month % 13 < 9?'0'+ (Month % 13+1): (Month%13) + 1
+                    p.innerText = Year + ':' + Month
+                } else {
+                    p.innerText = Year + ':' + Month
+                }
             }
         }
         showYearMonth()
