@@ -214,23 +214,29 @@
   CreateDom()
 
      // 补充格子
+    
     function vacancy(){
 
        for (let i = 1; i <= arr.length; i++) {
             
-             var res = arr[i-1].length % 7
+
              var result = 7 - arr[i - 1].length % 7
+             var res = arr[i - 1].length % 7
          
+          
             var div = document.querySelectorAll('div')
+console.log(div);
 
             for (let k = 1; k <= res; k++) {
+                if (i > 3) {
+                    return;
+                }
+                arr[i].unshift(arr[i - 1][arr[i - 1].length - k])
 
                 if (i <= 3) {
                     var spanElement = div[i].getElementsByTagName('span');
                 }
-                 if (i > 3) {
-                    return;
-                }
+               
                 var span = document.createElement('span')
                 span.innerText = arr[i - 1][arr[i - 1].length - k]
                 span.classList.add('.span')
@@ -239,9 +245,11 @@
                  height:${div[i].offsetHeight / 6}px;text-align:center;line-height:${Math.floor(div[i].offsetHeight / 6)}px;
                  box-sizing: border-box;border-right: none;background:#666`
                 div[i].insertBefore(span,spanElement[0])
-            }
 
-           for (let j = 1; j <= result+7; j++) {
+            }
+             
+           for (let j = 1; j <= result; j++) {
+               arr[i - 1].push(j)
                var span = document.createElement('span')
                span.innerText = j
                span.classList.add('.span')
@@ -251,10 +259,46 @@
                  box-sizing: border-box;border-right: none;background:#666;`
 
                div[i-1].appendChild(span)
+              
            }
        }
+
     }
     vacancy()
+
+    //  function CreateDom() {
+
+    //         for (let i = 0; i < arr.length; i++) {
+
+    //             let div = document.createElement('div')
+    //             div.classList.add('div')
+
+    //             var main = document.querySelector('main')
+    //             main.appendChild(div)
+    //             main.style.width = div.offsetWidth * arr.length + 'px'
+
+    //             let p = document.createElement('p')
+    //             p.classList.add('month')
+    //             div.appendChild(p)
+
+    //             for (let j = 0; j < arr[i].length; j++) {
+    //                 const element = arr[i][j]
+
+    //                 let span = document.createElement('span')
+    //                 span.innerText = element
+    //                 span.classList.add('.span')
+    //                 span.style.cssText = `display:inline-block;border:1px solid yellow;
+    //              width:${Math.floor(div.offsetWidth / 7)}px;
+    //              height:${div.offsetHeight / 6}px;text-align:center;line-height:${Math.floor(div.offsetHeight / 6)}px;
+    //              box-sizing: border-box;border-right: none`
+    //                 //  给不是当前月的日期添加高亮
+    //                 div.appendChild(span)
+
+    //             }
+    //         }
+    //     }
+
+    //     CreateDom()
 
         // 计算出当前index
         function currentIndex() {
