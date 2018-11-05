@@ -20,12 +20,12 @@
             nav {
                 width: 350px;
                 height: 365px;
-                /* overflow: hidden; */
+                overflow: hidden;
             }
 
             main {
-               
-                width:55550000px;
+               /* 不能设置超过总div的offsetWidth,否则有bug */
+                width:345800px;
             }
 
             .div {
@@ -130,28 +130,26 @@
         let time = new Date(2018, 9, 2)
         let timeFinall = new Date(2100, 12, 31)
 
-        // var Arr = []
-        // Arr.push(time, timeFinall)
+        
         var date1 = time.getFullYear() * 12 + time.getMonth();
         var date2 = timeFinall.getFullYear() * 12 + timeFinall.getMonth();
         // 获取月份总数
         var MonthOut = date2 - date1 + 1
-
+      
         var Timeout = Math.floor((timeFinall - time) / 1000 / 60 / 60 / 24);
         var arr = []
 
         //  获取今天  
         let nowDay = new Date()
-        // let nowDay = new Date("2018-12-31")
+        // let nowDay = new Date("2100-12-31")
         //  let nowDay = new Date("2018-11-30")
-        let day = nowDay.getDate()
         let Day;
         // 获取某一天到今天的天数
         var timer = Date.parse(nowDay);
         var lasttime = Date.parse("2018-09-02");
-
         //  加上1
-        var dayOut = Math.floor((timer - lasttime) / (1000 * 60 * 60 * 24) + 1);
+        var dayOut = Math.floor((timer - lasttime) / (1000 * 60 * 60 * 24)+1);
+
 
         // 处理月份  
         function ProcessingMonth(arr) {
@@ -192,7 +190,6 @@
                         }
                     } else {
                         for (let j = 1; j <= days(Year, Month); j++) {
-
                             if (i) {
                                 arr[i].push(j)
                             }
@@ -237,29 +234,47 @@
             
 
         let SelectDate = document.querySelector('.selectdate')
-        var text, finalltime;
-        var textDayOut;
+        let InputText = document.querySelector('.text')
+
+        var finalltime,textDayOut;
+        InputText.onkeyup = function () {
+            var text = InputText.value
+            var reg = /\d/
+           
+            if (reg.test(text)&& text.length===1) {
+                alert('必须输入六位或者八位例如:20180906或者201896')
+            }
+        }
+         
+
         SelectDate.onclick = () => {
-            text = document.querySelector('.text').value
+            var text = InputText.value
             let TextStr = []
+             console.log(this);
+             
             if (text) {
                 let yearText = text.slice(0, 4)
                 let monthDayText = text.slice(4)
                 var inputText = monthDayText.split('')
+                let input1,input2;
 
-                let input1 = "" + inputText[0] + inputText[1]
-                let input2 = "" + inputText[2] + inputText[3]
-
+                if(inputText.length===2){
+                       input1 = '0'+inputText[0]
+                       input2 = '0' + inputText[1]
+                }else{
+                    input1 = "" + inputText[0] + inputText[1]
+                    input2 = "" + inputText[2] + inputText[3]
+                }
+             
                 TextStr.push(yearText, input1, input2)
             }
-
+               
             finalltime = new Date(TextStr.join(','))
 
-            let date1 = finalltime.getFullYear() * 12 + finalltime.getMonth() + 1
+            let date1 = finalltime.getFullYear() * 12 + finalltime.getMonth()
             let date2 = time.getFullYear() * 12 + time.getMonth()
 
-            textDayOut = date1 - date2 
-           console.log(textDayOut);
+            textDayOut = date1 - date2 + 1
            
             Day = finalltime.getDate() + ''
            
@@ -273,10 +288,11 @@
 
         var div = main.querySelector('div')
         let width = 350;
-        // main.style.width = div.offsetWidth * arr.length + 'px'
-
+        
         // 计算出当前index
         function currentIndex() {
+                var Index = 1;
+
             if (typeof textDayOut === 'number') {
                 for (let i = 0; i < array.length; i++) {
                     if (textDayOut === i) {
@@ -284,7 +300,6 @@
                     }
                 }
             }else{
-                var Index = 1;
                 var prams = dayOut
                 for (let i = 0; i < array.length; i++) {
                     for (let j = 1; j <= array[i].length; j++) {
@@ -297,7 +312,7 @@
             }
            
         }
-
+       
         // 显示当前日期
         function ShowCurrentDay(Index) {
             
@@ -311,10 +326,13 @@
                 var oDiv = doc.querySelectorAll('div')[currentIndex()];
                 let spans = oDiv.querySelectorAll('span')
 
-                for (let i = 0; i < spans.length; i++) {
-                    if (spans[i].className == 'red') {
-                        spans[i].classList.remove('red')
+               let spansAll = document.querySelectorAll('div span')
+                spansAll.forEach( value => {
+                     if (value.className == 'red') {
+                        value.classList.remove('red')
                     }
+                })
+                for (let i = 0; i < spans.length; i++) {
                     if (spans[i].innerText === Day) {
                         let d = spans[i]
                         if (!d.className) {
@@ -322,16 +340,17 @@
                         }
                     }
                 }
+                
             }else{
                 let res = []
                 arr.forEach((val, index) => {
                     val.forEach((value, i) => {
                         const element = value
                         res.push(element)
-                        if (dayOut == res.length) {
+                        if (dayOut === res.length) {
                             var oDiv = doc.querySelectorAll('div')[index];
                             const span = oDiv.querySelectorAll('span')[i];
-                            span.classList.add('red')
+                            span.style.backgroundColor = 'red'
                             span.setAttribute('title', '今天')
                         }
                     })
@@ -376,12 +395,11 @@
 
         //  补充不是当前月份的日期
         function vacancy() {
+            var div = document.querySelectorAll('div')
 
             for (let i = 1; i < arr.length; i++) {
                 var result = 7 - arr[i - 1].length % 7
                 var res = arr[i - 1].length % 7
-
-                var div = document.querySelectorAll('div')
                 var spanElement = div[i].getElementsByTagName('span');
 
                 for (let k = 1; k <= res; k++) {
@@ -401,7 +419,16 @@
                     span.classList.add('span')
                     div[i - 1].appendChild(span)
                 }
-
+              
+            }
+              // 补充最后一个
+            var p = 35 % arr[arr.length - 1].length;
+            for (let i = 1; i <= p; i++) {
+                arr[arr.length - 1].push(i)
+                var span = document.createElement('span')
+                span.innerText = i
+                span.classList.add('span')
+                div[div.length - 2].appendChild(span)
             }
 
         }
@@ -420,16 +447,23 @@
                 // var Hours = nowDay.getHours();
                 // var Minute = nowDay.getMinutes()
                 // Minute = Minute > 9 ? Minute : 0 + '' + Minute;
-                Year = Year + Math.ceil(Month / 12) - 1
 
-                if (Month % 12 === 0) {
-                    Month = 12;
-                } else {
-                    Month = Month % 12 < 10 ? '0' + Month % 12 : Month % 12
-                }
+                try {
+                      Year = Year + Math.ceil(Month / 12) - 1
+
+                    if (Month % 12 === 0) {
+                        Month = 12;
+                    } else {
+                        Month = Month % 12 < 10 ? '0' + Month % 12 : Month % 12
+                    }
                     p.innerText = Year + ':' + Month;
+                } catch (error) {
+                    
+                }
+              
             }
         }
+
         showYearMonth()
         // 停止计时，输出时间
                 console.timeEnd('usetime');
