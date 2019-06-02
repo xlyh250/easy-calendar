@@ -5,138 +5,161 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-   <title>日历</title>
-   <style>
-            * {
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
-    user-select: none;
-    }
+    <title>日历</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+            user-select: none;
+        }
+        
+        body {
+            padding: 200px;
+        }
+        
+        div{
+            padding: 0;
+            margin: 0;
+        }
+        
+        nav {
+            width: 350px;
+            height: 365px;
+            overflow: hidden;
+        }
+        
+        main {
+            /* 不能设置超过总div的offsetWidth,否则有bug */
+            width:447300px;
+        }
+        
+        .div {
+            width: 350px;
+            /* height: 302px; */
+            float: left;
+            position: relative;
+            box-sizing: border-box;
+            /* transform: translateX() */
+        }
+        
+        h4 {
+            display: flex;
+            justify-content: space-between;
+            /* width: 100% */
+        }
+        
+        .active {
+            background: #666;
+        }
+        
+        .month {
+            position: absolute;
+            top: -51px;
+            left: 142px;
+            z-index: 1;
+        }
+        
+        .show {
+            transition: all 1s;
+            opacity: 1;
+        }
+        
+        .hide {
+            opacity: 0.8;
+        }
+        
+        button {
+            background: #1e89e0;
+            opacity: .8;
+            color: #fff;
+            border: none;
+            height: 25px;
+            padding: 0 3px;
+            border-radius: 5px;
+            box-shadow: #666 0px 0px 17px;
+            box-sizing: border-box;
+        }
+        h4 button:active{
+            font-weight: bolder;
+            color: #666;
+        }
+        
+        .week {
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        nav .week span {
+            font-size: 14px;
+        }
+        main{
+            margin-top: 10px;
+        }
+        main nav{
+            display:inline-block;
+            border:1px solid #03a9f470;
+            width:50px;
+            height:50px;
+            text-align:center;
+            box-sizing: border-box;
+            margin: -2px 0;
+            padding: 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        
+        main nav.holiday{
+            background: #1e89e0;
+            font-size: 14px;
+        }
+        main span div{
+         display: inline-block;
+         }
+         main nav.nav {
+            background: #56545475;
+            color: #f3f6fe;
+            opacity: .7;
+        }
+        main nav.red {
+            background: #ff6700;
+        }
+        .selectdate{
+            padding: 5px;
+            border-radius: 5px;
+            box-shadow: #666 0px 0px 5px;
+            color: #f3f3fe;
+            font-weight: normal;
+            height: auto;
+        }
+        input.text{
+            border: 1px solid #999;
+            line-height: 20px;
+            height: 27px;
+            font-size: 16px;
+            text-indent: 5px;
+        }
+        .selectdate:active{
+            background: #ff6700;
+            font-weight: bolder;
+        }
+        article.date{
+            position: absolute;
+            top: 203px;
+            left: 423px;
+        }
+        select{
+            width: 100px;
+            height: 25px;
+            line-height: 25px;
+            margin-top: 10px;
+        }
+        option.stlye{
+            width:40px;line-height:30px;height:40px;padding:10px;
+        }
     
-    body {
-    padding: 200px;
-    }
-    
-    nav {
-    width: 350px;
-    height: 365px;
-    overflow: hidden;
-    }
-    
-    main {
-    /* 不能设置超过总div的offsetWidth,否则有bug */
-    width:447300px;
-    }
-    
-    .div {
-    width: 350px;
-    /* height: 302px; */
-    float: left;
-    position: relative;
-    box-sizing: border-box;
-    /* transform: translateX() */
-    }
-    
-    h4 {
-    display: flex;
-    justify-content: space-between;
-    /* width: 100% */
-    }
-    
-    .active {
-    background: #666;
-    }
-    
-    .month {
-    position: absolute;
-    top: -41px;
-    left: 142px;
-    z-index: 1;
-    }
-    
-    .show {
-    transition: all 1s;
-    opacity: 1;
-    }
-    
-    .hide {
-    opacity: 0.8;
-    }
-    
-    button {
-        background: #1e89e0;
-        opacity: .8;
-        color: #fff;
-        border: none;
-        height: 25px;
-        padding: 0 3px;
-        border-radius: 5px;
-        box-shadow: #666 0px 0px 17px;
-        box-sizing: border-box;
-    }
-    h4 button:active{
-        font-weight: bolder;
-        color: #666;
-    }
-    
-    .week {
-    display: flex;
-    justify-content: space-between;
-    }
-    
-    nav .week span {
-    font-size: 14px;
-    }
-    
-    main span{
-    display:inline-block;
-    border:1px solid #03a9f470;
-    width:50px;
-    height:50px;
-    text-align:center;
-    line-height:50px;
-    box-sizing: border-box;
-    }
-    main span.span {
-    background: #56545475;
-    color: #f3f6fe;
-    }
-    main span.red {
-    background: #ff6700;
-    }
-    .selectdate{
-        padding: 5px;
-        border-radius: 5px;
-        box-shadow: #666 0px 0px 5px;
-        color: #f3f3fe;
-        font-weight: normal;
-       height: auto;
-    }
-    input.text{
-        border: 1px solid #999;
-        line-height: 20px;
-        height: 27px;
-        font-size: 16px;
-        text-indent: 5px;
-    }
-    .selectdate:active{
-        background: #ff6700;
-        font-weight: bolder;
-    }
-    article.date{
-        position: absolute;
-        top: 203px;
-        left: 423px;
-    }
-    select{
-        width: 100px;
-        height: 25px;
-        line-height: 25px;
-        margin-top: 10px;
-    }
-
-        </style>
+</style>
 </head>
 
 <body>
@@ -156,34 +179,36 @@
             <span>星期六</span>
         </h5>
         <main>
-
+            
         </main>
     </nav>
     <!-- <footer> -->
-    <input type="text" class="text">
-    <button class='selectdate'>提交</button>
-    <article class="date">计时</article>
+        <input type="text" class="text">
+        <button class='selectdate'>提交</button>
+        <article class="date">计时</article>
     </br>
     <select name="select_mnoth" id="YearMonth">
     </select>
     <!-- </footer> -->
-
+    
     <script>
         // 启动计时器
         console.time('usetime');
-
+        
         // 获取初始和结束日期
         let time = new Date(1994, 7, 30)
-        let timeFinall = new Date(2100, 12, 31)
-
+        // let timeFinall = new Date(2100, 12, 31)
+        let timeFinall = new Date(2070, 12, 31)
+        
         var date1 = time.getFullYear() * 12 + time.getMonth();
         var date2 = timeFinall.getFullYear() * 12 + timeFinall.getMonth();
         // 获取月份总数
         var MonthOut = date2 - date1 + 1
-
-        var Timeout = Math.floor((timeFinall - time) / 1000 / 60 / 60 / 24);
+        
+        //获取总天数
+        var Timeout =(timeFinall - time) / 1000 / 60 / 60 / 24;
         var arr = []
-
+        
         //  获取今天  
         // let nowDay = new Date()
         // let nowDay = new Date("2100-12-31")
@@ -195,11 +220,13 @@
         // console.log((timer - lasttime) / (1000 * 60 * 60 * 24));
         var f = (timer.getTime() - lasttime.getTime()) / (1000 * 60 * 60 * 24);
         var dayOut = Math.ceil(f);
-
+        
         // 处理月份  
         function ProcessingMonth(arr) {
+            var Year = time.getFullYear()
+            
             for (let i = 0; i < MonthOut; i++) {
-
+                
                 if (!arr[i]) {
                     arr[i] = []
                     // 特殊处理第一月
@@ -211,9 +238,8 @@
                             arr[i].push(j)
                         }
                     }
-                    var Year = time.getFullYear()
                     var Month = time.getMonth() + i;
-
+                    
                     // 判断是否是闰年
                     function isLeapYear(year) {
                         return year % 4 === 0 && Month % 12 == 2
@@ -226,34 +252,34 @@
                         return dayCount;
                     }
                     
-                  if(isLeapYear(Year)) {
+                    if (isLeapYear(Year)) {
                         let p = Year % 100 === 0 ? 28 : days(Year, Month) + 1;
                         for (let j = 1; j <= p; j++) {
                             arr[i].push(j)
                         }
                     }
                     else {
-                            for (let j = 1; j <= days(Year, Month); j++) {
-                                // ？？？
-                                i && arr[i].push(j)
-                            }
+                        for (let j = 1; j <= days(Year, Month); j++) {
+                            // ？？？
+                            i && arr[i].push(j)
+                        }
                     }
                     Year += Math.ceil(Month / 12);
-
+                    
+                }
             }
         }
-}
         
         ProcessingMonth(arr)
-
+        
         let doc = document
         var main = doc.querySelector('main')
-
+        
         // 生成dom元素
         function CreateDom() {
-
+            
             for (let i = 0; i < arr.length; i++) {
-
+                
                 let div = doc.createElement('div')
                 main.appendChild(div)
                 div.classList.add('div')
@@ -261,45 +287,43 @@
                 let p = doc.createElement('p')
                 p.classList.add('month')
                 div.appendChild(p)
-
+                
                 let fragment = doc.createDocumentFragment()
-
+                
                 for (let j = 0; j < arr[i].length; j++) {
-                    let span = doc.createElement('span')
-                    span.innerText = arr[i][j]
-                    fragment.appendChild(span)
+                    let nav = doc.createElement('nav');
+                    nav.innerText = arr[i][j]
+                    fragment.appendChild(nav)
                 }
                 div.appendChild(fragment)
             }
         }
-
+        
         CreateDom();
-
-
+        
         let SelectDate = document.querySelector('.selectdate')
         let InputText = document.querySelector('.text')
-
         var finalltime, textDayOut;
         InputText.onkeyup = function () {
             var text = InputText.value
             var reg = /\d/
-
+            
             if (reg.test(text) && text.length === 1) {
                 // alert('必须输入六位或者八位例如:20180906或者201896')
             }
         }
-
-
+        
+        
         SelectDate.onclick = () => {
             var text = InputText.value
             let TextStr = []
-
+            
             if (text) {
                 let yearText = text.slice(0, 4)
                 let monthDayText = text.slice(4)
                 var inputText = monthDayText.split('')
                 let input1, input2;
-
+                
                 if (inputText.length === 2) {
                     input1 = '0' + inputText[0]
                     input2 = '0' + inputText[1]
@@ -307,224 +331,298 @@
                     input1 = "" + inputText[0] + inputText[1]
                     input2 = "" + inputText[2] + inputText[3]
                 }
-
+                
                 TextStr.push(yearText, input1, input2)
             }
-
-            finalltime = new Date(TextStr.join(','))
-         
+            
+            if (TextStr.length > 1) {
+                finalltime = new Date(TextStr.join(','))
+            }
+            
             let date1 = finalltime.getFullYear() * 12 + finalltime.getMonth()
             let date2 = time.getFullYear() * 12 + time.getMonth()
-
+            
             textDayOut = date1 - date2 + 1
-
+            
             Day = finalltime.getDate() + ''
             currentIndex.call(this, textDayOut, Day)
             ShowCurrentDay.call(this, currentIndex(textDayOut))
             move.call(this, currentIndex(textDayOut))
-
+            
         }
-
+        
         let array = arr.concat()
-
-        var div = main.querySelector('div')
+        var div = doc.querySelectorAll('div')
+        let fristnavAll = document.querySelectorAll('div nav')
+        
         let width = 350;
-
+        
         // 计算出当前index
         function currentIndex() {
             var Index = 1;
             
             if (typeof textDayOut === 'number') {
-                for (let i = 0; i < array.length; i++) {
-                    if (textDayOut === i) {
-                        return i
-                    }
-                }
-            } else {
-                var prams = dayOut
-                for (let i = 0; i < array.length; i++) {
-                    for (let j = 1; j <= array[i].length; j++) {
-
-                        if (Index === prams) return i;
-
-                        Index++
-                    }
+               return array.findIndex((vaule,index) => textDayOut==index)
+               
+           } else {
+            var prams = dayOut
+            for (let i = 0; i < array.length; i++) {
+                for (let j = 1; j <= array[i].length; j++) {
+                    if (Index === prams) return i;
+                    Index++
                 }
             }
         }
-
+    }
+    
+        // 节日
+        function holiday(array) {
+            let count = []
+            
+            var starMonth = time.getMonth();
+            for (let i = 1; i < arr.length; i++) {
+                if (array[0] === 12) {
+                    if ((starMonth + i) % 12 === 0) {
+                        count.push(i)
+                    }
+                    
+                } else {
+                    let p = (starMonth + i) % 12;
+                    if (array[0] === p) {
+                        count.push(i)
+                    }
+                }
+            }
+            
+            for (let i = 0; i < count.length; i++) {
+                var createDiv = document.createElement('div');
+                var div12 = div[count[i]];
+                var navs = div12.querySelectorAll('nav');
+                createDiv.innerText = array[2];
+                navs[array[1] - 1].appendChild(createDiv)
+                navs[array[1] - 1].classList.add('holiday')
+                navs[array[1] - 1].setAttribute('title', array[2])
+            }
+        }
+        
+        var holidayArr = [
+		        [12, 25, '圣诞节'],
+		        [12, 24, '平安夜'],
+		        [1, 1, '元旦'],
+		        [2, 14, '情人节'],
+		        [3, 8, '妇女节'],
+		        [3, 12, '植树节'],
+		        [4, 1, '愚人节'],
+		        [4, 22, '地球日'],
+		        [5, 1, '劳动节'],
+		        [5, 4, '青年节'],
+		        [6, 1, '儿童节'],
+		        [6, 23, '奥林匹克日'],
+		        [7, 7, '卢沟桥事变'],
+		        [8, 1, '建军节'],
+		        [8, 15, '抗日胜利'],
+		        [9, 10, '教师节'],
+		        [10, 1, '国庆节']
+        ]
+        
+        for (let i = 0; i < holidayArr.length; i++) {
+            holiday(holidayArr[i]);
+        }
+        
         // 显示当前日期
-        function ShowCurrentDay(dayOut,ev='') {
-
+        function ShowCurrentDay(dayOut, ev = '') {
+            
             main.style.transition && (main.style.transition = 'none');
-
+            
             main.style.transform = `translateX(${-currentIndex() * width}px)`
-
+            
             if (typeof textDayOut === 'number') {
-                var oDiv = doc.querySelectorAll('div')[currentIndex()];
+                let currentDiv = div[currentIndex()]
                 let today = timer.getDate();
-                let spanList = oDiv.querySelectorAll('span');
-                    if(ev!==''){
-                        spanList.forEach( (value,index) => {
-                            value.innerText == today && value.classList.add('red')
-                        })
-                    }else{
-                            try {
-                                var spans = oDiv.querySelectorAll('span')
-
-                            } catch (error) {
-
-                            }
-                            let spansAll = document.querySelectorAll('div span')
-                            spansAll.forEach(value => {
-                                if (value.classList.contains('red')) {
-                                    value.classList.remove('red')
-                                }
-                            })
-                            for (let i = 0; i < spans.length; i++) {
-                                if (spans[i].innerText === Day) {
-                                    let d = spans[i]
-                                    if (!d.className) {
-                                        d.classList.add('red')
-                                    }
-                                }
-                            }         
-                    } 
-
-            } else {
-                let res = []
-                arr.forEach((val, index) => {
-                    val.forEach((value, i) => {
-                        const element = value
-                        res.push(element)
-                        if (dayOut === res.length) {
-                            var oDiv = doc.querySelectorAll('div')[index];
-                            const span = oDiv.querySelectorAll('span')[i];
-                            span.style.backgroundColor = '#ff6700'
-                            span.setAttribute('title', '今天')
+                if (ev !== '') {
+                    fristnavAll.forEach((value, index) => {
+                        value.innerText == today && value.classList.add('red')
+                    })
+                } else {
+                    try {
+                        var currentnavList = currentDiv.querySelectorAll('nav')
+                        
+                    } catch (error) {
+                        
+                    }
+                    fristnavAll.forEach(value => {
+                        if (value.classList.contains('red')) {
+                            value.classList.remove('red');
                         }
                     })
+                    for (let i = 0; i < currentnavList.length; i++) {
+                        
+                        if (currentnavList[i].innerText.indexOf(Day) > -1) {
+                         let text = currentnavList[i].innerText;
+                         let number = parseInt(text);
+                         if(Day == number){
+                             if (!currentnavList[i].className || currentnavList[i].classList.contains('holiday')) {
+                                 currentnavList[i].classList.add('red')
+                             }
+                         }
+                         
+                     }
+                 }
+                 
+                 
+             }
+             
+         } else {
+            let res = []
+            arr.forEach((val, index) => {
+                val.forEach((value, i) => {
+                    const element = value
+                    res.push(element)
+                    if (dayOut === res.length) {
+                        var oDiv = div[index];
+                        const nav = oDiv.querySelectorAll('nav')[i];
+                        nav.style.backgroundColor = '#ff6700'
+                        nav.setAttribute('title', '今天');
+                        
+                        !nav.classList.contains('holiday') && (nav.innerHTML += `<div>今天</div>`);
+                    }
                 })
-            }
-
+            })
         }
-
-        ShowCurrentDay(dayOut)
-         
-         let counting = 0;
-
+        
+    }
+    
+    ShowCurrentDay(dayOut)
+    
+    let counting = 0;
+    
+    
         //  点击左右移动  
-        function move(currentindex,count) {
-
+        function move(currentindex, count) {
+            
             let index = currentindex
             var btn = doc.getElementsByTagName('h4')[0].getElementsByTagName('button')
-            let spans = document.querySelectorAll('div span');
             let today = timer.getDate();
             let bool = true;
             const [btn1, btn2] = [...btn]
-          
+            
+            
             btn1.addEventListener('click', function () {
                 index--
-                removeClass()
-                if (index <0) {
+                removeClass();
+                
+                let num = main.style.transform;
+                num = num.replace(/[^0-9]/ig,"");
+                var prevBtn = document.querySelectorAll('button')[0];
+                
+                if(num==0){
+                    prevBtn.style.backgroundColor = 'red';
+                    prevBtn.innerText = '没有上一月了';
+                    setTimeout(() => {
+                        
+                        prevBtn.style.backgroundColor = '';
+                        prevBtn.innerText = '上一月'
+                    }, 2000)
+                    return false;
+                }
+                
+                if (index < 0) {
+                    addClass();
                     index = 0;
                 }
-
+                
                 main.style.transition = 'all 1s'
                 main.style.transform = `translateX(${-index * width}px)`
-                 
+                
             }, false)
-
+            
             btn2.addEventListener('click', () => {
                 index++
-                removeClass()
-                if (index > arr.length - 1) {
-                    index = arr.length - 1
+                removeClass();
+                if (index > arr.length-1 ) {
+                    addClass();
+                    index = arr.length - 1;
                 }
+                
                 main.style.transition = 'all 1s'
-                main.style.transform = `translateX(${-index * width}px)`
-
+                main.style.transform = `translateX(${-index * width}px)`;
             }, false)
-            let odiv = document.querySelector('div');
-            let Spans = odiv.querySelectorAll('span');
-            let oDiv = document.querySelectorAll('div');
-            let lastDiv = oDiv[oDiv.length - 1];
-            let lastSpans = lastDiv.querySelectorAll('span');
-
-              function removeClass() {
-                 
-                    spans.forEach( (value) => {
-                        value.classList.contains('red') && value.classList.remove('red');
-                    })
-                    
-                    if(index<0&&count>=3){
-                        
-                        Spans.forEach((value) => {
-                            if (value.innerText == today) {
-                                value.classList.add('red')
-                            }
-                        })
-                    }else if(index >arr.length-1 && count >= 3){
-                       lastSpans.forEach((value) => {
-                            if (value.innerText == today) {
-                                value.classList.add('red')
-                            }
-                        })
-                    }
+            
+            function removeClass() {
+                if (index < arr.length - 1 || index >= 0) {
+                    fristnavAll.forEach(value => value.classList.contains('red') && value.classList.remove('red'))
                 }
+                
+            }
+            
+            function addClass() {
+                let odiv = document.querySelector('div');
+                let navs = odiv.querySelectorAll('nav')[1];
+                let lastDiv = div[div.length - 1];
+                let lastnavs = lastDiv.querySelectorAll('nav');
+                
+                if (index < 0 && count >= 3) {
+                    
+                    navs.classList.add('red')
+                } else if (index > arr.length && count >= 3) {
+                    
+                    lastnavs.forEach((value) => {
+                        if (value.innerText == today) {
+                            value.classList.add('red')
+                        }
+                    })
+                }
+            }
         }
         move(currentIndex())
-
-        var div = doc.querySelectorAll('div')
-
+        
         //  补充不是当前月份的日期
         function vacancy() {
-
+            
             for (let i = 1; i < arr.length; i++) {
                 var result = 7 - arr[i - 1].length % 7
                 var res = arr[i - 1].length % 7
-                var spanElement = div[i].getElementsByTagName('span');
-
+                var navElement = div[i].querySelectorAll('nav');
+                
                 for (let k = 1; k <= res; k++) {
-
+                    
                     arr[i].unshift(arr[i - 1][arr[i - 1].length - k])
-                    var span = document.createElement('span')
-                    span.innerText = arr[i - 1][arr[i - 1].length - k]
-                    span.classList.add('span')
-                    div[i].insertBefore(span, spanElement[0])
+                    var nav = document.createElement('nav')
+                    nav.innerText = arr[i - 1][arr[i - 1].length - k]
+                    nav.classList.add('nav')
+                    div[i].insertBefore(nav, navElement[0])
                 }
-
+                
                 for (let j = 1; j <= result; j++) {
-
+                    
                     arr[i - 1].push(j)
-                    var span = document.createElement('span')
-                    span.innerText = j
-                    span.classList.add('span')
-                    div[i - 1].appendChild(span)
+                    var nav = document.createElement('nav')
+                    nav.innerText = j
+                    nav.classList.add('nav')
+                    div[i - 1].appendChild(nav)
                 }
             }
-
+            
             // 补充最后一个
             var p = 35 % arr[arr.length - 1].length;
             for (let i = 1; i <= p; i++) {
-                var span = document.createElement('span')
-                span.innerText = i
-                span.classList.add('span')
-                div[div.length - 1].appendChild(span)
+                var nav = document.createElement('nav')
+                nav.innerText = i
+                nav.classList.add('nav')
+                div[div.length - 1].appendChild(nav)
             }
-
+            
         }
         vacancy()
-
-
+        
         // 显示年月
         function showYearMonth() {
             for (let i = 0; i < div.length; i++) {
                 var p = div[i].querySelectorAll('p')[0]
-                  var Month = time.getMonth() + i;
-                  var Year = time.getFullYear()
-                 Year = Year + Math.ceil(Month / 12) - 1;
-
+                var Month = time.getMonth() + i;
+                var Year = time.getFullYear()
+                Year = Year + Math.ceil(Month / 12) - 1;
+                
                 if (Month % 12 === 0) {
                     Month = 12;
                 } else {
@@ -534,101 +632,118 @@
             }
         }
         showYearMonth()
-
-       // 计时
-        function  timeing() {
+        
+        
+        // 计时
+        function timeing() {
             let time = new Date();
             var h = time.getHours();
             var m = time.getMinutes();
             var s = time.getSeconds();
             var date = document.getElementsByTagName('article')[0];
+            
+            if(h==0){
+                currentIndex.call(this);
+                ShowCurrentDay.call(this, currentIndex(textDayOut))
+            }
             date.innerHTML = (h < 10 ? 0 + '' + h : h) + ':' + (m < 10 ? 0 + '' + m : m) + ':' + (s < 10 ? 0 + '' + s : s);
         }
         setInterval(timeing, 1000);
         timeing();
-
-
-     // 把年月列表显示出来
-      function select_month() {
-          let YearMonth = document.querySelector('#YearMonth');
-            var div = doc.querySelectorAll('div')
-    
-          for (let i = 0; i < div.length; i++) {
-              let option = document.createElement('option');
-              option.style.cssText = 'width:40px;line-height:30px;height:40px;padding:10px;'
-              let Month = time.getMonth()+i;
-              let Year = time.getFullYear();
-
-                Year = Year + Math.ceil(Month / 12) - 1;
-                  
-                  if (Month % 12 === 0) {
-                      Month = 12;
-                  } else {
-                      Month = Month % 12 < 10 ? '0' + Month % 12 : Month % 12;
-                  }
-               option.innerText = Year + '/' + Month;
-              YearMonth.appendChild(option);
-          }
-         
-      }
-      select_month();
-
-    let spans = document.querySelectorAll('div span')
-   
-
-  // 点击多选框删除上一个class
-    function removePrevClass(i) {
-        let spans = document.querySelectorAll('div span')
-        var oDiv = doc.querySelectorAll('div')[i];
-        var spanCurrent = oDiv.querySelectorAll('span');
-        let today = timer.getDate();
-        let classArr = [];
         
-   
-   // 点击多选框当前日期高亮
-    spanCurrent.forEach((value, index) => {
-            value.innerText == today && classArr.push(index)
-
-            if (today >= 24) {
-                if(classArr.length==2){
-                    spanCurrent[classArr[1]].classList && spanCurrent[classArr[1]].classList.add('red')
-                }
-            } else if (today < 8) {
-                if(classArr.length == 1){
-                    spanCurrent[classArr[0]].classList && spanCurrent[classArr[0]].classList.add('red')
-                }
-            }
-        })   
-    }
-      // 选择年月
-      function yearMonth() {
+        
+        
+        // 把年月列表显示出来
+        function select_month() {
             let YearMonth = document.querySelector('#YearMonth');
-           let options = document.querySelectorAll('option');
-           let count = 3;
-           let select_text;
-          YearMonth.addEventListener('click', (event) => {
-              select_text = options[YearMonth.selectedIndex];
-              let res = select_text.value.split(',').join('');
-             
-              counting +=1;
-             let finalltime = new Date(res)
-             let date1 = finalltime.getFullYear() * 12 + finalltime.getMonth()
-              let date2 = time.getFullYear() * 12 + time.getMonth()
-
-              textDayOut = date1 - date2 + 1;
-              ShowCurrentDay.call(this, dayOut, event);
-              move.call(this, currentIndex(textDayOut),count);
-             removePrevClass.call(this, currentIndex(textDayOut))
-          })
-      }
-    yearMonth()
-
-    document.querySelector('div').querySelector('span').style.background = '#1e89e0';
-     document.querySelector('div').querySelector('span').setAttribute('title', '作者生日')
+            
+            for (let i = 0; i < div.length; i++) {
+                let option = document.createElement('option');
+                option.classList.add('style')
+                let Month = time.getMonth() + i;
+                let Year = time.getFullYear();
+                
+                Year = Year + Math.ceil(Month / 12) - 1;
+                
+                if (Month % 12 === 0) {
+                    Month = 12;
+                } else {
+                    Month = Month % 12 < 10 ? '0' + Month % 12 : Month % 12;
+                }
+                option.innerText = Year + '/' + Month;
+                YearMonth.appendChild(option);
+            }
+            
+        }
+        select_month();
+        
+        
+        
+        // 点击多选框删除上一个class
+        function removePrevClass(i) {
+            var oDiv = doc.querySelectorAll('div')[i];
+            var navCurrent = oDiv.querySelectorAll('nav');
+            let today = timer.getDate();
+            let classArr = [];
+            
+            
+            // 点击多选框当前日期高亮
+            navCurrent.forEach((value, index) => {
+                value.innerText == today && classArr.push(index)
+                
+                if (today >= 24) {
+                    if (classArr.length == 2) {
+                        navCurrent[classArr[1]].classList && navCurrent[classArr[1]].classList.add('red')
+                    }
+                } else if (today < 8) {
+                    if (classArr.length == 1) {
+                        navCurrent[classArr[0]].classList && navCurrent[classArr[0]].classList.add('red')
+                    }
+                }
+            })
+        }
+        
+        let YearMonth = document.querySelector('#YearMonth');
+        let options = YearMonth.querySelectorAll('option');
+        // 选择年月
+        function yearMonth() {
+            
+            let count = 3;
+            let select_text;
+            YearMonth.addEventListener('click', (event) => {
+                select_text = options[YearMonth.selectedIndex];
+                let res = select_text.value.split(',').join('');
+                
+                counting += 1;
+                let finalltime = new Date(res)
+                let date1 = finalltime.getFullYear() * 12 + finalltime.getMonth()
+                let date2 = time.getFullYear() * 12 + time.getMonth()
+                
+                textDayOut = date1 - date2 + 1;
+                ShowCurrentDay.call(this, dayOut, event);
+                move.call(this, currentIndex(textDayOut), count);
+                removePrevClass.call(this, currentIndex(textDayOut))
+            })
+        }
+        yearMonth()
+        
+        // 显示当前选项的年月
+        function showOption() {
+            let fristTime = time.getFullYear() * 12 + time.getMonth();
+            let nowTime = timer.getFullYear() * 12 + timer.getMonth();
+            let currentOption = options[nowTime - fristTime + 1];
+            currentOption.selected = true;
+            
+        }
+        showOption()
+        
+        document.querySelector('div').querySelector('nav').style.background = '#1e89e0';
+        document.querySelector('div').querySelector('nav').setAttribute('title', '作者生日');
+        
+        
+        
         // 停止计时，输出时间
         console.timeEnd('usetime');
-
-
     </script>
 </body>
 
